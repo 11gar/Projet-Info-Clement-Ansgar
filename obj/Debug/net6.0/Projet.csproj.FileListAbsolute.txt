@@ -1,0 +1,15 @@
+C:\Users\Ansgar\Desktop\1A\Info\Projet\bin\Debug\net6.0\Projet.exe
+C:\Users\Ansgar\Desktop\1A\Info\Projet\bin\Debug\net6.0\Projet.deps.json
+C:\Users\Ansgar\Desktop\1A\Info\Projet\bin\Debug\net6.0\Projet.runtimeconfig.json
+C:\Users\Ansgar\Desktop\1A\Info\Projet\bin\Debug\net6.0\Projet.dll
+C:\Users\Ansgar\Desktop\1A\Info\Projet\bin\Debug\net6.0\Projet.pdb
+C:\Users\Ansgar\Desktop\1A\Info\Projet\obj\Debug\net6.0\Projet.csproj.AssemblyReference.cache
+C:\Users\Ansgar\Desktop\1A\Info\Projet\obj\Debug\net6.0\Projet.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ansgar\Desktop\1A\Info\Projet\obj\Debug\net6.0\Projet.AssemblyInfoInputs.cache
+C:\Users\Ansgar\Desktop\1A\Info\Projet\obj\Debug\net6.0\Projet.AssemblyInfo.cs
+C:\Users\Ansgar\Desktop\1A\Info\Projet\obj\Debug\net6.0\Projet.csproj.CoreCompileInputs.cache
+C:\Users\Ansgar\Desktop\1A\Info\Projet\obj\Debug\net6.0\Projet.dll
+C:\Users\Ansgar\Desktop\1A\Info\Projet\obj\Debug\net6.0\refint\Projet.dll
+C:\Users\Ansgar\Desktop\1A\Info\Projet\obj\Debug\net6.0\Projet.pdb
+C:\Users\Ansgar\Desktop\1A\Info\Projet\obj\Debug\net6.0\Projet.genruntimeconfig.cache
+C:\Users\Ansgar\Desktop\1A\Info\Projet\obj\Debug\net6.0\ref\Projet.dll
