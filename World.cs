@@ -4,25 +4,26 @@ public class World
     string characters = "┌ ┐ └ ┘ │ ┼ ─ ";
     public int XSize;
     public int YSize;
-    public Grid? Environnement;
+    public Team Environnement;
     public Team Equipe1;
     public Team Equipe2;
     public List<Grid> Grilles;
+    public Ball Balle;
     public World(int x, int y, int size)
     {
         CaseSize = size;
         XSize = x;
         YSize = y;
-        Environnement = new Grid(x, y);
-
         Grilles = new List<Grid>();
-        Grilles.Add(Environnement);
-        Equipe1 = new Team(this);
-        Equipe2 = new Team(this);
+        Equipe1 = new Team(this, 0);
+        Equipe2 = new Team(this, YSize);
+        Equipe1.Ennemis = Equipe2;
+        Equipe2.Ennemis = Equipe1;
+        Environnement = new Team(this, 0);
+        Balle = new Ball(this.XSize / 2, this.YSize / 2, this);
+        Grilles.Add(Environnement.Grille);
         Grilles.Add(Equipe1.Grille);
         Grilles.Add(Equipe2.Grille);
-
-
     }
     public void Show()
     {
@@ -90,8 +91,21 @@ public class World
                 Console.Write("│");
                 foreach (Grid G in Grilles)
                 {
+                    if (G.CheckActive(Math.Min(x + 1, XSize - 1), j) || G.CheckActive(x, Math.Min(j + 1, YSize - 1)) || G.CheckActive(Math.Max(x - 1, 0), j) || G.CheckActive(x, Math.Max(j - 1, 0)))
+                    {
+                        Console.BackgroundColor = ConsoleColor.Blue;
+                    }
+                    if (Balle.X == x && Balle.Y == j)
+                    {
+                        Console.BackgroundColor = ConsoleColor.Green;
+                    }
                     if ((G.Check(x, j)) && (alr == false))
                     {
+                        if (G.Grille[x, j].SonTour)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                        }
+
                         if (G.Grille[x, j].Above == null)
                         {
                             Console.Write(G.Infill[k, G.Grille[x, j].Id]);
@@ -101,6 +115,11 @@ public class World
                         {
                             if (G.Grille[x, j].Above.Above == null)
                             {
+                                Console.ForegroundColor = ConsoleColor.White;
+                                if (G.Grille[x, j].StackTabler()[k].SonTour)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                }
                                 Console.Write(G.Infill[(int)Math.Floor((decimal)(k + 2) / 2), G.Grille[x, j].StackTabler()[k].Id]);
                                 alr = true;
                             }
@@ -111,11 +130,15 @@ public class World
                             }
                         }
                     }
+                    Console.ForegroundColor = ConsoleColor.White;
+
                 }
                 if (alr == false)
                 {
                     Console.Write("       ");
+
                 }
+                Console.BackgroundColor = ConsoleColor.Black;
                 alr = false;
             }
             Console.Write("│");

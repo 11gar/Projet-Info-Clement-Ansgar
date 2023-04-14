@@ -7,6 +7,8 @@ public class Game
     public World Monde;
     public Player J1;
     public Player J2;
+    public List<Player> Joueurs;
+    int[] yPourJoueurAuDepart;
     public Game(int x, int y)
     {
         maxPlayers = x;
@@ -14,11 +16,17 @@ public class Game
         Start = new Smallgrid(x, y, this);
         J1 = new Player(Monde.Equipe1);
         J2 = new Player(Monde.Equipe2);
-
+        Joueurs = new List<Player>();
+        Joueurs.Add(J1);
+        Joueurs.Add(J2);
+        Monde.Equipe1.Joueur = J1;
+        Monde.Equipe2.Joueur = J2;
+        yPourJoueurAuDepart = new int[2];
+        yPourJoueurAuDepart[0] = 1;
+        yPourJoueurAuDepart[1] = Monde.YSize - 2;
 
         for (int j = 0; j < maxPlayers + 1; j++)
         {
-            Console.Write("a");
             if (j < 10)
             {
                 Start.Infill[0, j] = $" {j} ";
@@ -34,9 +42,9 @@ public class Game
         }
 
 
-        Monde.Environnement.Infill[0, 0] = "  XXX  "; // l. 12 à XX : Designs des différents joueurs
-        Monde.Environnement.Infill[1, 0] = "  X X  ";
-        Monde.Environnement.Infill[2, 0] = "  XXX  ";
+        Monde.Environnement.Grille.Infill[0, 0] = "   /\\  "; // l. 12 à XX : Designs des différents joueurs
+        Monde.Environnement.Grille.Infill[1, 0] = " /\\__\\ ";
+        Monde.Environnement.Grille.Infill[2, 0] = "/    \\\\";
 
         Monde.Equipe1.Grille.Infill[0, 0] = "  ___  ";
         Monde.Equipe1.Grille.Infill[1, 0] = " (` ´) ";
@@ -46,19 +54,72 @@ public class Game
         Monde.Equipe1.Grille.Infill[1, 1] = " [°|°] ";
         Monde.Equipe1.Grille.Infill[2, 1] = " /| |\\ ";
 
+        Monde.Equipe1.Grille.Infill[0, 2] = "  ___  ";
+        Monde.Equipe1.Grille.Infill[1, 2] = " (> <) ";
+        Monde.Equipe1.Grille.Infill[2, 2] = " // \\\\ ";
+
+        Monde.Equipe1.Grille.Infill[0, 3] = " _/-\\_◊";
+        Monde.Equipe1.Grille.Infill[1, 3] = " (O-O)|";
+        Monde.Equipe1.Grille.Infill[2, 3] = " /| |\\|";
+
+        Monde.Equipe1.Grille.Infill[0, 4] = " _[O]_U";
+        Monde.Equipe1.Grille.Infill[1, 4] = " (` ´)|";
+        Monde.Equipe1.Grille.Infill[2, 4] = " /| \\ |";
+
         Monde.Equipe2.Grille.Infill[0, 0] = "   o   ";
         Monde.Equipe2.Grille.Infill[1, 0] = " /(_)\\ ";
         Monde.Equipe2.Grille.Infill[2, 0] = "  / \\  ";
+
+        Monde.Equipe2.Grille.Infill[0, 2] = "   \"   ";
+        Monde.Equipe2.Grille.Infill[1, 2] = " /(_)\\ ";
+        Monde.Equipe2.Grille.Infill[2, 2] = "  / \\  ";
 
         Monde.Equipe2.Grille.Infill[0, 1] = "  |T|  ";
         Monde.Equipe2.Grille.Infill[1, 1] = " /[_]\\ ";
         Monde.Equipe2.Grille.Infill[2, 1] = "  / \\  ";
 
+        Monde.Equipe2.Grille.Infill[0, 3] = "  /ô\\ ◊";
+        Monde.Equipe2.Grille.Infill[1, 3] = " /(_)\\|";
+        Monde.Equipe2.Grille.Infill[2, 3] = " |/ \\||";
 
+        Monde.Equipe2.Grille.Infill[0, 4] = "  _o_ U";
+        Monde.Equipe2.Grille.Infill[1, 4] = " /(_)\\|";
+        Monde.Equipe2.Grille.Infill[2, 4] = "  / \\ |";
     }
 
     public void Play()
     {
+        Setup();
+        Partie();
+    }
+
+    public void Partie()
+    {
+        // Summoner w1 = new Summoner(5, 8, Monde, Monde.Equipe1);
+        // Warrior w2 = new Warrior(7, 8, Monde, Monde.Equipe1);
+        // Miner w3 = new Miner(7, 7, Monde, Monde.Equipe1);
+        // Tank w4 = new Tank(7, 6, Monde, Monde.Equipe1);
+        // Summoner w5 = new Summoner(5, 6, Monde, Monde.Equipe2);
+        // Warrior w6 = new Warrior(7, 4, Monde, Monde.Equipe2);
+        // Miner w7 = new Miner(7, 3, Monde, Monde.Equipe2);
+        // Tank w8 = new Tank(7, 2, Monde, Monde.Equipe2);
+        // Monde.Balle.Porteur = w1;
+        // w1.Balle = Monde.Balle;
+
+        while (J1.Equipe.Personnages[0].Hp > 3)
+        {
+            for (int j = 0; j < PersoParJoueur; j++)
+            {
+                Turn(J1.Equipe.Personnages[j]);
+                Turn(J2.Equipe.Personnages[j]);
+            }
+        }
+
+    }
+
+    public void Setup()
+    {
+        string rep;
         int tailleLigne = 100;
         Console.Clear();
         WriteSlow("Bienvenue dans cette partie de Poulpy Bowl !", 20, 40);
@@ -104,6 +165,9 @@ public class Game
             PersoParJoueur = int.Parse(Console.ReadLine());
         }
 
+        J1.Equipe.Personnages = new Character[PersoParJoueur];
+        J2.Equipe.Personnages = new Character[PersoParJoueur];
+
         for (int i = 0; i < PersoParJoueur; i++)
         {
             Start.FillGrid((i + 1) * Monde.XSize / (PersoParJoueur + 1), 1, i + 1);
@@ -113,8 +177,41 @@ public class Game
         WriteSlow($"Voici la configuration recommandée pour ce nombre de joueur par équipe.", 20, 40);
         Console.WriteLine("");
         Monde.ShowLite(Start);
-
-
+        for (int k = 0; k < Monde.XSize; k++)
+        {
+            if (Start.Grille[k, 1] != 0)
+            {
+                for (int j = 0; j < 2; j++)
+                {
+                    WriteSlow($"{Joueurs[j].Nom}, choisissez la classe de votre joueur {Start.Grille[k, 1]}", 5, 5);
+                    Console.WriteLine("");
+                    rep = Console.ReadLine();
+                    rep.ToLower();
+                    switch (rep)
+                    {
+                        case "warrior":
+                            Joueurs[j].Equipe.Personnages[Start.Grille[k, 1] - 1] = new Warrior(k, yPourJoueurAuDepart[j], Monde, Joueurs[j].Equipe);
+                            break;
+                        case "tank":
+                            Joueurs[j].Equipe.Personnages[Start.Grille[k, 1] - 1] = new Tank(k, yPourJoueurAuDepart[j], Monde, Joueurs[j].Equipe);
+                            break;
+                        case "sprinter":
+                            Joueurs[j].Equipe.Personnages[Start.Grille[k, 1] - 1] = new Sprinter(k, yPourJoueurAuDepart[j], Monde, Joueurs[j].Equipe);
+                            break;
+                        case "summoner":
+                            Joueurs[j].Equipe.Personnages[Start.Grille[k, 1] - 1] = new Summoner(k, yPourJoueurAuDepart[j], Monde, Joueurs[j].Equipe);
+                            break;
+                        case "miner":
+                            Joueurs[j].Equipe.Personnages[Start.Grille[k, 1] - 1] = new Miner(k, yPourJoueurAuDepart[j], Monde, Joueurs[j].Equipe);
+                            break;
+                        default:
+                            Console.WriteLine("Type non valide, le personnage sera un Warrior par défaut.");
+                            Joueurs[j].Equipe.Personnages[Start.Grille[k, 1] - 1] = new Warrior(k, yPourJoueurAuDepart[j], Monde, Joueurs[j].Equipe);
+                            break;
+                    }
+                }
+            }
+        }
     }
 
 
@@ -137,6 +234,88 @@ public class Game
             }
             Console.Write(c);
             System.Threading.Thread.Sleep(delay);
+        }
+    }
+
+    public void Turn(Character C)
+    {
+        int Action;
+        C.SonTour = true;
+        C.Lowest().Active = true;
+        C.Active = true;
+        Monde.Show();
+        WriteSlow($"{C.Equipe.Joueur.Nom}, quelle est votre action ?", 5, 10);
+        Capacite(C);
+        Console.WriteLine("");
+        Action = int.Parse(Console.ReadLine());
+        Console.WriteLine("");
+        int x = 0;
+        int y = 0;
+        if (Action != 3)
+        {
+            int pos;
+            Console.Write("Vous utilisez votre capacité sur la case :");
+            Console.WriteLine("");
+            Console.WriteLine("   [1]");
+            Console.WriteLine("[2]   [3]");
+            Console.WriteLine("   [4]");
+            Console.WriteLine("");
+            pos = int.Parse(Console.ReadLine());
+
+            switch (pos)
+            {
+                case 1:
+                    x = -1;
+                    break;
+                case 2:
+                    y = -1;
+                    break;
+                case 3:
+                    y = 1;
+                    break;
+                case 4:
+                    x = 1;
+                    break;
+
+            }
+        }
+
+        switch (Action)
+        {
+            case 1:
+                C.Move(C.X + x, C.Y + y);
+                break;
+            case 2:
+                C.Attack(C.X + x, C.Y + y);
+                break;
+            case 3:
+                if (C.Balle != null)
+                {
+                    C.Passe(C.Nearest());
+                }
+                break;
+            case 4:
+                C.SpecialAbility(C.X + x, C.Y + y);
+                break;
+        }
+        C.Active = false;
+        C.Lowest().Active = false;
+        C.SonTour = false;
+
+    }
+
+    public void Capacite(Character C)
+    {
+        Console.Write("   Déplacement (1)   |   Attaque (2)   ");
+        if (C.Balle == null)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+        }
+        Console.Write("   Passe (3)   ");
+        Console.ForegroundColor = ConsoleColor.White;
+        if (C.Special != null)
+        {
+            Console.Write($"|   {C.Special} (4)   ");
         }
     }
 }

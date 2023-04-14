@@ -1,12 +1,15 @@
 public class Team
 {
+    public Player Joueur;
+    public int YStart;
+    public Team Ennemis;
     public World Monde;
     public Grid Grille;
-    public List<Character> Personnages;
-    public Team(World monde)
+    public Character[] Personnages;
+    public Team(World monde, int yStart)
     {
         Monde = monde;
-        Personnages = new List<Character>();
+        YStart = yStart;
         Grille = new Grid(Monde.XSize, monde.YSize);
     }
 

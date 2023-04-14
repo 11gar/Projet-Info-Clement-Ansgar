@@ -4,7 +4,7 @@ public class Grid
     public Character?[,] Grille;
     public Grid(int x, int y)
     {
-        Grille = new Character[x, y];
+        Grille = new Character?[x, y];
         for (int i = 0; i < x; i++)
         {
             for (int j = 0; j < y; j++)
@@ -22,6 +22,19 @@ public class Grid
         }
         return false;
     }
+
+    public bool CheckActive(int x, int y)
+    {
+        if (Grille[x, y] != null)
+        {
+            if (Grille[x, y].Active)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public void FillGrid(Character ch)
     {
