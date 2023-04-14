@@ -8,7 +8,6 @@ public abstract class Character
     public int X;
     public int Y;
     public int Strength;
-    public int Speed;
     public int Hp;
     public int Id;
     public int NumOrder;
@@ -41,7 +40,6 @@ public abstract class Character
         if (this.Equipe.Grille.Check(x, y))
         {
             this.Equipe.Grille.Grille[x, y].Hp -= this.Strength;
-            Console.WriteLine("Aie!! mais t'es con ou quoi mon reuf");
         }
     }
     public void Passe(Character? ch)
@@ -201,9 +199,8 @@ public class Warrior : Character
     public Warrior(int x, int y, World m, Team e) : base(x, y, m, e)
     {
         Id = 0;
-        Strength = 12;
-        Hp = 8;
-        Speed = 5;
+        Strength = 5;
+        Hp = 5;
     }
 }
 
@@ -213,20 +210,28 @@ public class Tank : Character
     {
         Id = 1;
         Strength = 2;
-        Hp = 20;
-        Speed = 2;
+        Hp = 9;
     }
 }
 
 public class Sprinter : Character
 {
+
     public Sprinter(int x, int y, World m, Team e) : base(x, y, m, e)
     {
         Id = 2;
-        Strength = 5;
-        Hp = 4;
-        Speed = 15;
+        Strength = 2;
+        Hp = 1;
+        Special = "Sprint";
     }
+    public override void SpecialAbility(int x, int y)
+    {
+        int dirX = x - X;
+        int dirY = y - Y;
+        Move(x + dirX, y + dirY);
+        Move(x + dirX, y + dirY);
+    }
+
 }
 
 public class Summoner : Character
@@ -236,7 +241,6 @@ public class Summoner : Character
         Id = 3;
         Strength = 5;
         Hp = 4;
-        Speed = 3;
         Special = "Summon";
     }
     public override void SpecialAbility(int x, int y)
@@ -259,9 +263,8 @@ public class Miner : Character
     public Miner(int x, int y, World m, Team e) : base(x, y, m, e)
     {
         Id = 4;
-        Strength = 5;
-        Hp = 4;
-        Speed = 3;
+        Strength = 2;
+        Hp = 3;
         Special = "Destroy";
     }
     public override void SpecialAbility(int x, int y)
@@ -279,7 +282,6 @@ public class Obstacle : Character
         Id = 0;
         Strength = 0;
         Hp = 999;
-        Speed = 0;
     }
 }
 

@@ -101,6 +101,10 @@ public class World
                     }
                     if ((G.Check(x, j)) && (alr == false))
                     {
+                        string str1 = G.Infill[2, G.Grille[x, j].Id].Substring(0, 3);
+                        string str2 = G.Infill[2, G.Grille[x, j].Id].Substring(4, 3);
+                        G.Infill[2, G.Grille[x, j].Id] = str1 + G.Grille[x, j].Hp.ToString()[0] + str2; //.Replace(' ', G.Grille[x, j].Hp.ToString()[0]);
+
                         if (G.Grille[x, j].SonTour)
                         {
                             Console.ForegroundColor = ConsoleColor.Blue;

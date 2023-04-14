@@ -93,30 +93,51 @@ public class Game
         Partie();
     }
 
+    public void TestGame()
+    {
+        Sprinter w1 = new Sprinter(5, 8, Monde, Monde.Equipe1);
+        Warrior w2 = new Warrior(6, 8, Monde, Monde.Equipe1);
+        Turn(w1);
+        Turn(w2);
+    }
+
     public void Partie()
     {
-        // Summoner w1 = new Summoner(5, 8, Monde, Monde.Equipe1);
-        // Warrior w2 = new Warrior(7, 8, Monde, Monde.Equipe1);
-        // Miner w3 = new Miner(7, 7, Monde, Monde.Equipe1);
-        // Tank w4 = new Tank(7, 6, Monde, Monde.Equipe1);
-        // Summoner w5 = new Summoner(5, 6, Monde, Monde.Equipe2);
-        // Warrior w6 = new Warrior(7, 4, Monde, Monde.Equipe2);
-        // Miner w7 = new Miner(7, 3, Monde, Monde.Equipe2);
-        // Tank w8 = new Tank(7, 2, Monde, Monde.Equipe2);
-        // Monde.Balle.Porteur = w1;
-        // w1.Balle = Monde.Balle;
-
-        while (J1.Equipe.Personnages[0].Hp > 3)
+        while (J1.Score < 2 || J2.Score < 2)
         {
             for (int j = 0; j < PersoParJoueur; j++)
             {
                 Turn(J1.Equipe.Personnages[j]);
+
                 Turn(J2.Equipe.Personnages[j]);
+
+                ResetRound();
+
             }
         }
 
     }
 
+    public void ResetRound()
+    {
+        for (int j = 0; j < 2; j++)
+        {
+            foreach (Character C in Joueurs[j].Equipe.Personnages)
+            {
+                C.Above = null;
+                C.Under = null;
+                C.Balle = null;
+            }
+            Monde.Balle.Porteur = null;
+            for (int k = 0; k < Monde.XSize; k++)
+            {
+                if (Start.Grille[k, 1] != 0)
+                {
+                    Joueurs[j].Equipe.Personnages[Start.Grille[k, 1] - 1].Tp(k, yPourJoueurAuDepart[j]);
+                }
+            }
+        }
+    }
     public void Setup()
     {
         string rep;

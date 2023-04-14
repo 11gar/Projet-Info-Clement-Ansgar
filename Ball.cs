@@ -12,4 +12,20 @@ public class Ball
         Monde = monde;
     }
 
+    public bool CheckForPoint()
+    {
+        if (Porteur != null)
+        {
+            if (X < 1 && Porteur.Equipe == Monde.Equipe1)
+            {
+                Monde.Equipe1.Joueur.Score += 1;
+            }
+            if (X >= Monde.XSize - 1 && Porteur.Equipe == Monde.Equipe2)
+            {
+                Monde.Equipe2.Joueur.Score += 1;
+            }
+        }
+        return true;
+    }
+
 }

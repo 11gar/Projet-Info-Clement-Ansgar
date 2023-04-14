@@ -1,2 +1,2 @@
-﻿Game jeu = new Game(10, 6);
+﻿Game jeu = new Game(10, 5);
 jeu.Play();
