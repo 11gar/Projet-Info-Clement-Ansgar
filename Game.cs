@@ -107,12 +107,14 @@ public class Game
         {
             for (int j = 0; j < PersoParJoueur; j++)
             {
-                Turn(J1.Equipe.Personnages[j]);
-
-                Turn(J2.Equipe.Personnages[j]);
-
-                ResetRound();
-
+                foreach (Player J in Joueurs)
+                {
+                    Turn(J.Equipe.Personnages[j]);
+                    if (Monde.Balle.CheckForPoint())
+                    {
+                        ResetRound();
+                    }
+                }
             }
         }
 
@@ -235,7 +237,6 @@ public class Game
         }
     }
 
-
     public void WriteMultiple(string S, int k, int delay) //Ecrit le string S, k fois.
     {
         for (int j = 0; j < k; j++)
@@ -264,6 +265,7 @@ public class Game
         C.SonTour = true;
         C.Lowest().Active = true;
         C.Active = true;
+        //Console.Clear();
         Monde.Show();
         WriteSlow($"{C.Equipe.Joueur.Nom}, quelle est votre action ?", 5, 10);
         Capacite(C);
@@ -339,4 +341,5 @@ public class Game
             Console.Write($"|   {C.Special} (4)   ");
         }
     }
+
 }

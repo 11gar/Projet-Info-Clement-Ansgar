@@ -16,16 +16,21 @@ public class Ball
     {
         if (Porteur != null)
         {
-            if (X < 1 && Porteur.Equipe == Monde.Equipe1)
+            Console.WriteLine(Porteur.Hp);
+            Console.WriteLine(Porteur.X);
+            if (Porteur.X >= (Monde.XSize - 1) && Porteur.Equipe == Monde.Equipe1)
             {
                 Monde.Equipe1.Joueur.Score += 1;
+                return true;
             }
-            if (X >= Monde.XSize - 1 && Porteur.Equipe == Monde.Equipe2)
+            if (Porteur.X < 1 && Porteur.Equipe == Monde.Equipe2)
             {
                 Monde.Equipe2.Joueur.Score += 1;
+                return true;
             }
         }
-        return true;
+        return false;
+
     }
 
 }

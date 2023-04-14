@@ -57,18 +57,28 @@ public abstract class Character
     public virtual void SpecialAbility(int x, int y) { }
     public void Move(int x, int y)
     {
-        if (!this.Equipe.Ennemis.Grille.Check(x, y) && !this.Monde.Environnement.Grille.Check(x, y))
+        if ((Monde.XSize > x) && (Monde.YSize > y) && (0 <= y) && (0 <= x))
         {
-            this.Tp(x, y);
-            if (Balle != null)
+            if (!this.Equipe.Ennemis.Grille.Check(x, y) && !this.Monde.Environnement.Grille.Check(x, y))
             {
-                Balle.X = x;
-                Balle.Y = y;
+                this.Tp(x, y);
+                if (Balle != null)
+                {
+                    Balle.X = x;
+                    Balle.Y = y;
+                }
+                else
+                {
+                    if (this.Monde.Balle.X == x && this.Monde.Balle.Y == y)
+                    {
+                        this.Monde.Balle.Porteur = this;
+                        this.Balle = this.Monde.Balle;
+                    }
+                }
             }
-            if (this.Monde.Balle.X == x && this.Monde.Balle.Y == y)
+            else
             {
-                this.Monde.Balle.Porteur = this;
-                this.Balle = this.Monde.Balle;
+                Console.WriteLine("Impossible de se déplacer ici...");
             }
         }
         else
@@ -109,31 +119,28 @@ public abstract class Character
     }
     public void Tp(int x, int y)
     {
-        if ((this.Equipe.Monde.XSize > x) && (this.Equipe.Monde.YSize > y) && (0 < y) && (0 < x))
+        if (this.Under == null)
         {
-
-            if (this.Under == null)
-            {
-                Equipe.Grille.Grille[X, Y] = null;
-            }
-            else
-            {
-                Equipe.Grille.Grille[X, Y] = this.Lowest();
-                this.Lowest().Active = false;
-                this.Under.Above = null;
-                this.Under = null;
-            }
-
-            if (Equipe.Grille.Check(x, y))
-            {
-                Equipe.Grille.Grille[x, y].Stack(this);
-            }
-            else
-            {
-                Equipe.Grille.Grille[x, y] = this;
-            }
-            this.Follow(x, y);
+            Equipe.Grille.Grille[X, Y] = null;
         }
+        else
+        {
+            Equipe.Grille.Grille[X, Y] = this.Lowest();
+            this.Lowest().Active = false;
+            this.Under.Above = null;
+            this.Under = null;
+        }
+
+        if (Equipe.Grille.Check(x, y))
+        {
+            Equipe.Grille.Grille[x, y].Stack(this);
+        }
+        else
+        {
+            Equipe.Grille.Grille[x, y] = this;
+        }
+        this.Follow(x, y);
+
     }
     public void Follow(int x, int y)
     {
